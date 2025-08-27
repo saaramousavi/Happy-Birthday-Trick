@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>تولدت مبارک 🎉</title>
+<style>
+:root{--bg1:#0f1020;--bg2:#1b2440;--acc:#ffbf69;}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0;font-family:"Vazirmatn",system-ui,-apple-system,Segoe UI,Roboto,Tahoma,sans-serif;color:#fff;overflow:hidden;background: radial-gradient(1200px 800px at 70% -10%, #28316122, transparent), linear-gradient(135deg,var(--bg1),var(--bg2));}
+
+/* ستاره‌ها */
+.stars{position:fixed; inset:0; pointer-events:none; background:transparent}
+.stars i{position:absolute; width:2px; height:2px; background:#fff; opacity:.6; border-radius:50%; filter:drop-shadow(0 0 6px #fff)}
+
+/* هاله نور */
+.auras{position:fixed; inset:-20% -10%; filter: blur(100px); opacity:.35; pointer-events:none}
+.auras div{position:absolute; width:420px; height:420px; border-radius:50%}
+.a1{left:8%; top:10%; background:conic-gradient(from 120deg, #7b5cff, #00e5ff); animation:auraMove 15s ease-in-out infinite}
+.a2{right:5%; bottom:8%; background:conic-gradient(from 20deg, #ff6a88, #ffd166); animation:auraMove 18s ease-in-out infinite}
+@keyframes auraMove {0%{transform:translate(0,0);}50%{transform:translate(25px,-15px);}100%{transform:translate(0,0);}}
+
+/* کارت */
+.wrap{position:relative; display:grid; place-items:center; height:100%; padding:24px}
+.card{position:relative; width:min(720px,92vw); padding:28px 28px 24px; border-radius:28px; background:linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.04)); border:1px solid rgba(255,255,255,.15); backdrop-filter: blur(12px); box-shadow:0 20px 60px rgba(0,0,0,.35);}
+
+/* متن‌ها */
+.title{font-size:clamp(28px,6vw,44px); line-height:1.25; margin:4px 0 10px; font-weight:900; letter-spacing:.2px}
+.subtitle{opacity:.9; margin:0 0 18px; font-size:clamp(15px,2.8vw,18px)}
+.type{min-height:2.2em; font-weight:700; font-size:clamp(20px,4.8vw,28px); color:var(--acc)}
+.shine{background:linear-gradient(90deg,#fff,#ffe7b5,#fff); -webkit-background-clip:text; background-clip:text; color:transparent; animation: shine 3.6s linear infinite}
+@keyframes shine{0%{background-position:-200% 0}100%{background-position:200% 0}}
+
+/* دکمه‌ها */
+.controls{display:flex; gap:10px; flex-wrap:wrap; margin-top:16px}
+.controls input{flex:1 1 200px; padding:12px 14px; border-radius:14px; border:1px solid rgba(255,255,255,.25); background:rgba(255,255,255,.06); color:#fff; outline:none}
+.btn{padding:12px 16px; border-radius:14px; border:1px solid transparent; cursor:pointer; font-weight:800; transition: all .3s ease;}
+.primary{background:linear-gradient(135deg,var(--acc),#ffd166); color:#1b1b1b}
+.primary:hover{box-shadow:0 0 12px var(--acc),0 0 24px var(--acc); transform:scale(1.05);}
+.ghost{background:rgba(255,255,255,.06); color:#fff; border-color:rgba(255,255,255,.2)}
+.btn:active{transform:translateY(1px)}
+
+/* محفظه بادکنک و کنفتی */
+#balloons,#confetti{position:absolute; inset:0; pointer-events:none; overflow:hidden}
+.piece{position:absolute; width:10px; height:16px; will-change:transform,opacity}
+.hint{margin-top:8px; opacity:.7; font-size:13px}
+</style>
+</head>
+<body>
+<div class="auras"><div class="a1"></div><div class="a2"></div></div>
+<div class="stars" id="stars"></div>
+<div id="balloons"></div>
+<div id="confetti"></div>
+
+<main class="wrap">
+  <section class="card">
+    <div class="title">🎂 <span class="shine"> منِ عزیزم تولدت مبارک</span></div>
+    <p class="subtitle">از طرف خودت، با عشق✨</p>
+    <div id="typed" class="type"></div>
+    <div class="controls">
+      <input id="name" placeholder="اسم‌تو بنویس… (اختیاری)" />
+      <button class="btn primary" id="celebrate">شروع جشن 🎉</button>
+      <button class="btn ghost" id="burst">یه بار دیگه بترکون 💥</button>
+    </div>
+    <div class="hint">روی صفحه هم کلیک کنی،آتش‌بازی کوچولو می‌ریزه</div>
+  </section>
+</main>
+
+<audio id="cheer" src="https://www.soundjay.com/human/cheer-01.mp3"></audio>
+
+<script>
+// ستاره‌ها
+(function makeStars(){
+  const wrap=document.getElementById('stars');
+  const frag=document.createDocumentFragment();
+  for(let i=0;i<120;i++){
+    const s=document.createElement('i');
+    s.style.left=Math.random()*100+'%';
+    s.style.top=Math.random()*100+'%';
+    s.style.opacity=0.3+Math.random()*0.7;
+    s.style.transform=`scale(${.6+Math.random()*1.4})`;
+    s.animate([{opacity:.3},{opacity:1},{opacity:.3}],{duration:2500+Math.random()*4000,iterations:Infinity});
+    frag.appendChild(s);
+  }
+  wrap.appendChild(frag);
+})();
+
+// تایپ‌نویس
+const typedEl=document.getElementById('typed');
+const nameInput=document.getElementById('name');
+const msgs=(who)=>[
+  `هی ${who||'دوستِ خوش‌ذوق'}! 🎈`,
+  'یک سال دیگه قوی‌تر، به هدفات نزدیک تر و خفن‌تر شدی! 💪',
+  'برات پر از شادی، سلامتی و پروژه‌های موفق آرزو می‌کنم. ✨',
+  'بزن بریم برای بهترین سال زندگی! 🚀'
+];
+async function typeLines(lines){
+  typedEl.textContent='';
+  for(const line of lines){
+    await type(line); await wait(500);
+    typedEl.appendChild(document.createElement('br'));
+  }
+}
+function wait(ms){return new Promise(r=>setTimeout(r,ms))}
+async function type(text){
+  for(const ch of text){ typedEl.textContent+=ch; await wait(24+Math.random()*40); }
+}
+
+// کنفتی
+function confettiBurst(power=1){
+  const field=document.getElementById('confetti');
+  const colors=['#ffd166','#ff5d8f','#7b5cff','#5de0e6','#ffffff'];
+  const pieces=120*power;
+  const frag=document.createDocumentFragment();
+  const w=field.offsetWidth, h=field.offsetHeight;
+  for(let i=0;i<pieces;i++){
+    const p=document.createElement('div'); p.className='piece';
+    const c=colors[Math.floor(Math.random()*colors.length)];
+    p.style.background=Math.random()>.5?c:`linear-gradient(45deg,${c},#fff)`;
+    const startX=w/2+(Math.random()-.5)*w*0.3;
+    const startY=h*0.75+(Math.random()-.5)*100;
+    p.style.left=startX+'px'; p.style.top=startY+'px';
+    const rot=Math.random()*360;
+    const dx=(Math.random()-.5)*w*0.9;
+    const dy=(Math.random()*h*0.9)+80;
+    const dur=900+Math.random()*1400;
+    p.animate([{transform:`translate(0,0) rotate(${rot}deg)`,opacity:1},{transform:`translate(${dx}px,${dy}px) rotate(${rot+360}deg)`,opacity:0}],{duration:dur,easing:'cubic-bezier(.11,.8,.24,1)',fill:'forwards'});
+    frag.appendChild(p);
+    setTimeout(()=>p.remove(),dur+50);
+  }
+  field.appendChild(frag);
+}
+
+// بادکنک‌ها با Emoji شناور نرم
+function floatingBalloons(){
+  const emojis=['🎈','🎉','🎊','✨'];
+  const el=document.getElementById('balloons');
+  const containerHeight = el.offsetHeight;
+  for(let i=0;i<25;i++){
+    const b=document.createElement('div');
+    b.textContent=emojis[Math.floor(Math.random()*emojis.length)];
+    b.style.position='absolute';
+    b.style.fontSize=28+Math.random()*20+'px';
+    b.style.left=Math.random()*100+'%';
+    b.style.top=containerHeight-50+'px';
+    b.style.pointerEvents='none';
+    b.style.userSelect='none';
+    el.appendChild(b);
+
+    const dx=(Math.random()-0.5)*50; // حرکت نرم چپ و راست
+    const dy=containerHeight - 20;   // تا بالای محفظه
+
+    b.animate([
+      { transform: 'translate(0,0)' },
+      { transform: `translate(${dx}px, -${dy}px)` }
+    ], {
+      duration: 10000 + Math.random()*5000,
+      easing: 'ease-out',
+      iterations: Infinity,
+      direction: 'alternate'
+    });
+  }
+}
+
+// رویدادها
+document.getElementById('celebrate').addEventListener('click', async ()=>{
+  const who=(nameInput.value||'').trim();
+  await typeLines(msgs(who));
+  confettiBurst(1.2); floatingBalloons();
+  document.getElementById('cheer').play();
+});
+document.getElementById('burst').addEventListener('click', ()=>{ confettiBurst(1); floatingBalloons(); });
+document.addEventListener('click', (e)=>{ if(!e.target.closest('.controls')){ confettiBurst(.6); floatingBalloons(); }});
+
+// تایپ اولیه
+typeLines(["آماده‌ای برای جشن؟ روی ‘شروع جشن’ بزن! 🎂"]).then(()=>{});
+</script>
+</body>
+</html>
